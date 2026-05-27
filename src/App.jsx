@@ -16,6 +16,7 @@ import MyOrders from "./pages/MyOrders";
 
 import SellerLogin from "./components/seller/SellerLogin";
 import SellerLayout from "./pages/seller/SellerLayout";
+import Dashboard from "./pages/seller/Dashboard";
 import AddProduct from "./pages/seller/AddProduct";
 import ProductList from "./pages/seller/ProductList";
 import Orders from "./pages/seller/Orders";
@@ -34,7 +35,7 @@ const App = () => {
 
   return (
 
-    <div className="text-default min-h-screen">
+    <div className="min-h-screen app-hero-bg">
 
       {!isSellerPath && <Navbar />}
 
@@ -42,11 +43,7 @@ const App = () => {
 
       <Toaster />
 
-      <div className={`${
-        isSellerPath
-        ? ""
-        : "px-6 md:px-16 lg:px-24 xl:px-32"
-      }`}>
+      <div>
 
         <Routes>
 
@@ -97,6 +94,15 @@ const App = () => {
 
             <Route
               index
+              element={
+                isSeller
+                ? <Dashboard/>
+                : null
+              }
+            />
+
+            <Route
+              path="add-product"
               element={
                 isSeller
                 ? <AddProduct/>

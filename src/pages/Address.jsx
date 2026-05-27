@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import Card from "../components/ui/Card";
 
 const Address = () => {
-
   const [address, setAddress] = React.useState({
     firstName: "",
     lastName: "",
@@ -20,154 +22,177 @@ const Address = () => {
   const { navigate } = useContext(AppContext);
 
   const handleChange = (e) => {
-
     setAddress({
       ...address,
       [e.target.name]: e.target.value
     });
-
   };
 
-
-  const submitHanlder = (e) => {
-
+  const submitHandler = (e) => {
     e.preventDefault();
-
-    toast.success(
-      "Address Saved Successfully"
-    );
-
+    toast.success("Address Saved Successfully");
     navigate("/cart");
-
   };
-
 
   return (
-    <div className="mt-12 flex flex-col md:flex-row gap-6 p-6 bg-gray-100 rounded-lg shadow-md">
+    <div className="pt-24 pb-16 px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <div className="inline-block">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Add Delivery Address</h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary-dark rounded-full"></div>
+          </div>
+          <p className="text-white/85 mt-4">Enter your delivery details below</p>
+        </div>
 
-      <div className="flex-1 bg-white p-6 rounded-lg shadow">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Form */}
+          <Card className="flex-1 p-6 md:p-8 shadow-xl border border-white/12 glass">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-bold text-white">Address Details</h2>
+            </div>
 
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">
-          Address Details
-        </h2>
+            <form onSubmit={submitHandler} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">First Name</label>
+                  <Input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    value={address.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <form
-          onSubmit={submitHanlder}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-        >
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Last Name</label>
+                  <Input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={address.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={address.firstName}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Email</label>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={address.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={address.lastName}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Street Address</label>
+                  <Input
+                    type="text"
+                    name="street"
+                    placeholder="Street Address"
+                    value={address.street}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={address.email}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md col-span-2"
-            required
-          />
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">City</label>
+                  <Input
+                    type="text"
+                    name="city"
+                    placeholder="City"
+                    value={address.city}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="street"
-            placeholder="Street"
-            value={address.street}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md col-span-2"
-            required
-          />
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">State</label>
+                  <Input
+                    type="text"
+                    name="state"
+                    placeholder="State"
+                    value={address.state}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={address.city}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Zip Code</label>
+                  <Input
+                    type="number"
+                    name="zipCode"
+                    placeholder="Zip Code"
+                    value={address.zipCode}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="state"
-            placeholder="State"
-            value={address.state}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div>
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Country</label>
+                  <Input
+                    type="text"
+                    name="country"
+                    placeholder="Country"
+                    value={address.country}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="number"
-            name="zipCode"
-            placeholder="Zip Code"
-            value={address.zipCode}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-white/85 mb-2">Phone Number</label>
+                  <Input
+                    type="number"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={address.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={address.country}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md"
-            required
-          />
+                <div className="md:col-span-2">
+                  <Button type="submit" variant="primary" size="lg" className="w-full shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300">
+                    Save Address
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </Card>
 
-          <input
-            type="number"
-            name="phone"
-            placeholder="Phone"
-            value={address.phone}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-md col-span-2"
-            required
-          />
-
-          <button
-            type="submit"
-            className="w-full col-span-2 bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-md"
-          >
-            Save Address
-          </button>
-
-        </form>
-
+          {/* Image */}
+          <div className="hidden lg:flex flex-1 items-center justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary-dark/20 rounded-3xl animate-pulse"></div>
+              <img
+                src={assets.add_address_iamge}
+                alt="Delivery"
+                className="w-full max-w-sm rounded-3xl shadow-2xl relative z-10"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-
-
-      <div className="flex-1 flex items-center justify-center">
-
-        <img
-          src={assets.add_address_iamge}
-          alt=""
-          className="w-full max-w-xs rounded-lg shadow-md"
-        />
-
-      </div>
-
     </div>
   );
 };

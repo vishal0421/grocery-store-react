@@ -1,115 +1,320 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
-
-
+import { useAppContext } from "../context/AppContext";
+import Button from "./ui/Button";
 
 const Navbar = () => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
+  const {
+    user,
+    setUser,
+    navigate,
+    setShowUserLogin,
+    cartCount,
+    searchQuery,
+    setSearchQuery,
+    products,
+    wishlistItems,
+  } = useAppContext();
 
-    const { user, setUser, navigate, setShowUserLogin, cartCount, searchQuery, setSearchQuery } = useContext(AppContext);
-    useEffect(()=>{
-        if(searchQuery.length>0){
-        navigate('/products')
+  const suggestions = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+
+    return products
+      .filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .slice(0, 5);
+  }, [searchQuery, products]);
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      navigate("/products");
     }
-    },[searchQuery]);
-    return (
-        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+  }, [searchQuery]);
 
-            <Link to="/">
-                <h1 className="text-2xl font-bold text-orange-600">Grocery App</h1>
-            </Link>
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
 
-            {/* Desktop Menu */}
-            <div className="hidden sm:flex items-center gap-8">
-                <Link to="/">Home</Link>
-                <Link to="/products">All Products</Link>
+    window.addEventListener("scroll", handleScroll);
 
-                <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input
-                    onChange={(e)=>setSearchQuery(e.target.value)}
-                    className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.836 10.615 15 14.695" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path clip-rule="evenodd" d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                <div onClick={() => navigate("/cart")} className="relative cursor-pointer">
-                    <img src={assets.cart_icon} alt="" className="w-6 h-6" />
-                    <button className="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">{cartCount()}</button>
-                    </div>
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-white/10 backdrop-blur-2xl border-b border-white/10 shadow-xl"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="flex items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32 py-4">
 
-                {user ? (
-                    <>
-                        <div className="relative group">
-                            <img src={assets.profile_icon} alt="" className="w-10" />
-                            <ul className="hidden group-hover:block absolute top-10 right-0 bg-white shadow-md rounded-md border border-gray-200 py-2 w-30 z-40 text-sm">
-                                <li onClick={() => {
-                                    navigate("/my-orders")
-                                }}
-                                    className="p-1.5 cursor-pointer">My Orders</li>
-                                <li onClick={() => setUser(null)} className="p-1.5 cursor-pointer">Logout</li>
-                            </ul>
+        {/* Logo */}
 
-                        </div>
+        <Link to="/" className="flex items-center gap-3 group">
 
-                    </>
-                ) : (
+          <div
+            className="
+            w-11 h-11
+            rounded-2xl
+            bg-gradient-to-br
+            from-green-500
+            to-emerald-700
+            flex
+            items-center
+            justify-center
+            shadow-xl
+            shadow-green-500/30
+            group-hover:rotate-6
+            group-hover:scale-110
+            transition-all duration-500
+            "
+          >
 
-                    <button 
-                    onClick={() => setShowUserLogin(true)}
-                    className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
-                        Login
-                    </button>
-                )
+            🛒
+
+          </div>
+
+          <div>
+
+            <h1 className="text-xl md:text-2xl font-extrabold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
+              FreshGrocer
+            </h1>
+
+            <p
+              className={`text-[11px] ${
+                scrolled
+                  ? "text-gray-400"
+                  : "text-gray-300"
+              }`}
+            >
+              Fresh Everyday
+            </p>
+
+          </div>
+
+        </Link>
+
+        {/* Desktop */}
+
+        <div className="hidden lg:flex items-center gap-6">
+
+          <Link
+            to="/"
+            className={`font-medium transition duration-300 ${
+              scrolled
+                ? "text-white hover:text-green-300"
+                : "text-white hover:text-green-300"
+            }`}
+          >
+            Home
+          </Link>
+
+          <Link
+            to="/products"
+            className={`font-medium transition duration-300 ${
+              scrolled
+                ? "text-white hover:text-green-300"
+                : "text-white hover:text-green-300"
+            }`}
+          >
+            Products
+          </Link>
+
+          {/* Search */}
+
+          <div className="relative">
+
+            <div
+              className="
+              flex items-center gap-3
+              bg-white/10
+              backdrop-blur-xl
+              border border-white/10
+              px-5 py-3
+              rounded-full
+              w-[320px]
+              "
+            >
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+
+              <input
+                value={searchQuery}
+                onChange={(e) =>
+                  setSearchQuery(e.target.value)
                 }
+                className="
+                bg-transparent
+                outline-none
+                w-full
+                text-sm
+                text-white
+                placeholder:text-gray-300
+                "
+                type="text"
+                placeholder="Search fresh groceries..."
+              />
+
             </div>
 
-            <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="sm:hidden">
-                {/* Menu Icon SVG */}
-                <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="21" height="1.5" rx=".75" fill="#426287" />
-                    <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
-                    <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
-                </svg>
-            </button>
+            {suggestions.length > 0 && (
+              <div className="absolute mt-3 w-full bg-[#12211a]/95 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl">
 
-            {/* Mobile Menu */}
-            <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
-                <Link to="/">Home</Link>
-                <Link to="/products">All Products</Link>
-                {user ? (
-                    <>
-                        <div className="relative group">
-                            <img src={assets.profile_icon} alt="" className="w-10" />
-                            <ul className="hidden group-hover:block absolute top-10 right-0 bg-white shadow-md rounded-md border border-gray-200 py-2 w-30 z-40 text-sm">
-                                <li onClick={() => {
-                                    navigate("/my-orders")
-                                }}
-                                    className="p-1.5 cursor-pointer">My Orders</li>
-                                <li onClick={() => setUser(null)} className="p-1.5 cursor-pointer">Logout</li>
-                            </ul>
+                {suggestions.map((product) => (
 
-                        </div>
+                  <button
+                    key={product._id}
+                    onClick={() => {
+                      navigate(`/product/${product._id}`);
+                      setSearchQuery("");
+                    }}
+                    className="w-full px-4 py-3 text-left hover:bg-white/10 transition"
+                  >
+                    <p className="font-medium text-white">
+                      {product.name}
+                    </p>
 
-                    </>
-                ) : (
+                    <p className="text-xs text-gray-400">
+                      {product.category}
+                    </p>
 
-                    <button 
-                    onClick={() => setShowUserLogin(true)}
-                    className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
-                        Login
-                    </button>
-                )
-                }
+                  </button>
+
+                ))}
+
+              </div>
+            )}
+
+          </div>
+
+          {/* Cart */}
+
+          <button
+            onClick={() => navigate("/cart")}
+            className="relative p-3 rounded-2xl bg-white/10 backdrop-blur-xl hover:scale-110 transition"
+          >
+
+            🛒
+
+            {cartCount() > 0 && (
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white w-5 h-5 text-[10px] rounded-full flex items-center justify-center">
+                {cartCount()}
+              </span>
+            )}
+
+          </button>
+
+          {/* Wishlist */}
+
+          <button
+            onClick={() => navigate("/products")}
+            className="relative p-3 rounded-2xl bg-white/10 backdrop-blur-xl hover:scale-110 transition"
+          >
+
+            ❤️
+
+            {Object.keys(wishlistItems).length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-green-600 text-white w-5 h-5 text-[10px] rounded-full flex items-center justify-center">
+                {Object.keys(wishlistItems).length}
+              </span>
+            )}
+
+          </button>
+
+          {/* Notification */}
+
+          <button
+            onClick={() =>
+              setShowNotifications(!showNotifications)
+            }
+            className="relative p-3 rounded-2xl bg-white/10 backdrop-blur-xl hover:scale-110 transition"
+          >
+            🔔
+          </button>
+
+          {user ? (
+            <div className="relative group">
+
+              <button className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center shadow-lg">
+
+                <span className="text-white font-bold">
+                  {user?.name?.[0] || "U"}
+                </span>
+
+              </button>
+
+              <ul className="hidden group-hover:block absolute top-14 right-0 bg-[#12211a]/95 backdrop-blur-xl rounded-2xl shadow-xl w-48 py-2">
+
+                <li
+                  onClick={() =>
+                    navigate("/my-orders")
+                  }
+                  className="px-4 py-3 hover:bg-white/10 cursor-pointer text-white"
+                >
+                  My Orders
+                </li>
+
+                <li
+                  onClick={() => setUser(null)}
+                  className="px-4 py-3 hover:bg-red-500/10 text-red-400 cursor-pointer"
+                >
+                  Logout
+                </li>
+
+              </ul>
+
             </div>
+          ) : (
+            <Button
+              onClick={() =>
+                setShowUserLogin(true)
+              }
+              className="
+              bg-gradient-to-r
+              from-green-500
+              to-emerald-700
+              "
+            >
+              Login
+            </Button>
+          )}
+        </div>
 
+        {/* Mobile */}
 
-        </nav>
-    )
-}
+        <button
+          onClick={() => setOpen(!open)}
+          className={`lg:hidden p-2 ${
+            scrolled
+              ? "text-white"
+              : "text-white"
+          }`}
+        >
+          ☰
+        </button>
+
+      </div>
+    </nav>
+  );
+};
 
 export default Navbar;

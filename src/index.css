@@ -5,6 +5,108 @@
   font-family: "Outfit", sans-serif;
 }
 
-@theme{
-  --color-primary: #4b0082;
+:root{
+  /* Primary palette tuned to match Hero gradient */
+  --color-primary: #14532d; /* mid green */
+  --color-primary-dark: #0a2e14; /* deep green */
+  --color-primary-light: #86efac;
+  --color-accent: #f97316;
+  --color-accent-light: #fbbf24;
+  --color-surface: #f8fafc;
+  --color-surface-light: #f1f5f9;
+
+  --hero-grad-1: rgba(10,46,20,0.9);
+  --hero-grad-2: rgba(20,83,45,0.75);
+  --hero-grad-3: rgba(31,41,55,0.7);
+}
+
+/* Reusable theme utilities (used alongside Tailwind classes) */
+.hero-gradient-overlay{
+  background: linear-gradient(90deg, var(--hero-grad-1), var(--hero-grad-2), var(--hero-grad-3));
+}
+
+.glass {
+  background-color: rgba(255,255,255,0.08);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.4);
+}
+
+.glass-weak{
+  background-color: rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.75rem;
+}
+
+.gradient-accent-text{
+  background: linear-gradient(90deg, #FDE68A 0%, #FDBA74 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-accent-custom{
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light));
+  color: white;
+  box-shadow: 0 10px 25px rgba(249,115,22,0.15);
+}
+
+.btn-ghost-glass{
+  background-color: rgba(255,255,255,0.08);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.hero-glow-circle-green{
+  filter: blur(36px);
+  opacity: 0.22;
+}
+
+.hero-glow-circle-orange{
+  filter: blur(36px);
+  opacity: 0.18;
+}
+
+/* Full-app background that extends the Hero vibe */
+.app-hero-bg{
+  background: linear-gradient(180deg, rgba(10,46,20,0.95) 0%, rgba(20,83,45,0.9) 35%, rgba(31,41,55,0.85) 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  color: white;
+}
+
+/* Scoped overrides so existing Tailwind utility classes look good on the hero background */
+.app-hero-bg .text-gray-900,
+.app-hero-bg .text-gray-800 {
+  color: rgba(255,255,255,0.95) !important;
+}
+
+.app-hero-bg .text-gray-600,
+.app-hero-bg .text-gray-500 {
+  color: rgba(255,255,255,0.78) !important;
+}
+
+.app-hero-bg .bg-white,
+.app-hero-bg .bg-gray-50 {
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+.app-hero-bg .border-gray-200,
+.app-hero-bg .border-white\/20,
+.app-hero-bg .border-white\/30,
+.app-hero-bg .border-white\/40 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+.app-hero-bg .placeholder\:text-gray-400::placeholder{
+  color: rgba(255,255,255,0.6) !important;
+}
+
+.app-hero-bg a,
+.app-hero-bg .hover\:text-primary:hover {
+  color: var(--color-primary) !important;
 }

@@ -1,63 +1,294 @@
-import { useContext , useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
+import Card from "./ui/Card";
 
 const ProductCard = ({ product }) => {
-  const {navigate , addToCart , cartItems, removeFromCart}=useContext(AppContext)
+  const {
+    navigate,
+    addToCart,
+    cartItems,
+    removeFromCart
+  } = useContext(AppContext);
 
+  const discount = Math.round(
+    ((product.price - product.offerPrice) /
+      product.price) *
+      100
+  );
 
-  return product &&(
-      <div onClick={()=>{
-       navigate(`/product/${product._id || product.id}`)
-      }} className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-56 w-full">
-            <div className="group cursor-pointer flex items-center justify-center px-2">
-                <img className="group-hover:scale-105 transition max-w-26 md:max-w-36" src={product.image[0]} alt={product.name} />
+  return (
+    product && (
+      <Card
+        hover={true}
+        className="group cursor-pointer overflow-hidden min-w-[220px] max-w-[280px] w-full rounded-[30px] glass hover:-translate-y-3 hover:shadow-2xl transition-all duration-500"
+        onClick={() =>
+          navigate(
+            `/product/${product._id || product.id}`
+          )
+        }
+      >
+
+        {/* IMAGE */}
+
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-green-50 via-white to-orange-50">
+
+          {/* DISCOUNT */}
+
+          {discount > 0 && (
+            <div
+              className="
+              absolute
+              top-4
+              left-4
+              z-20
+              bg-gradient-to-r
+              from-orange-500
+              to-red-500
+              text-white
+              text-xs
+              font-bold
+              px-4
+              py-2
+              rounded-full
+              shadow-xl
+              shadow-orange-300/40
+              backdrop-blur-xl
+              "
+            >
+              🔥 {discount}% OFF
             </div>
-            <div className="text-gray-500/60 text-sm">
-                <p>{product.category}</p>
-                <p className="text-gray-700 font-medium text-lg truncate w-full">{product.name}</p>
-                <div className="flex items-center gap-0.5 ">
-                  {Array(5)
-                  .fill("")
-                  .map((_,i)=>(
-                    <img
-                    key={i}
-                    src={i < 4 ? assets.star_icon : assets.star_dull_icon}
-                    alt="rating"
-                    className="w-3 md:w-3.5"
-                    />
-                  ))}
-                  <p>(4)</p>
-                </div>
-                <div className="flex items-end justify-between mt-3">
-                    <p className="md:text-xl text-base font-medium text-indigo-500">
-                        ${product.offerPrice} <span className="text-gray-500/60 md:text-sm text-xs line-through">${product.price}</span>
-                    </p>
-                    <div className="text-indigo-500 " onClick={(e)=>e.stopPropagation()}>
-                        {!cartItems[product._id] ?  (
-                            <button className="flex items-center justify-center gap-1 bg-indigo-100 border border-indigo-300 md:w-[80px] w-[64px] h-[34px] rounded text-indigo-600 font-medium" onClick={() => addToCart(product._id)} >
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M.583.583h2.333l1.564 7.81a1.17 1.17 0 0 0 1.166.94h5.67a1.17 1.17 0 0 0 1.167-.94l.933-4.893H3.5m2.333 8.75a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0m6.417 0a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0" stroke="#615fff" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Add
-                            </button>
-                        ) : (
-                            <div className="flex items-center justify-center gap-2 md:w-20 w-16 h-[34px] bg-indigo-500/25 rounded select-none">
-                                <button onClick={()=>removeFromCart(product._id)} className="cursor-pointer text-md px-2 h-full" >
-                                    -
-                                </button>
-                                <span className="w-5 text-center">{cartItems[product._id]}</span>
-                                <button onClick={() => addToCart(product._id)} className="cursor-pointer text-md px-2 h-full" >
-                                    +
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
+          )}
+
+          {/* QUICK BUTTON */}
+
+         {/* QUICK BUTTON */}
+
+<div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500">
+
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      addToCart(product._id);
+    }}
+    className="
+    h-11
+    w-11
+    rounded-2xl
+    bg-gradient-to-r
+    from-green-500
+    to-emerald-700
+    text-white
+    flex
+    items-center
+    justify-center
+    shadow-xl
+    shadow-green-500/30
+    hover:scale-110
+    hover:rotate-12
+    transition-all
+    duration-300
+    "
+  >
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      strokeWidth="3"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 5v14M5 12h14"
+      />
+    </svg>
+  </button>
+
+</div>
+
+          <div className="h-full w-full p-5 flex items-center justify-center">
+
+            <img
+              src={product.image[0]}
+              alt={product.name}
+              className="
+              object-contain
+              max-w-full
+              max-h-full
+              transition-all
+              duration-700
+              group-hover:scale-125
+              group-hover:rotate-3
+              "
+            />
+
+          </div>
+
         </div>
-    );
-  
+
+        {/* CONTENT */}
+
+        <div className="p-5">
+
+          <p
+            className="
+            text-xs
+            uppercase
+            tracking-widest
+            text-green-600
+            font-semibold
+            mb-2
+          "
+          >
+            {product.category}
+          </p>
+
+          <h3
+            className="
+            text-gray-800
+            font-bold
+            text-base
+            line-clamp-2
+            mb-3
+            group-hover:text-green-600
+            transition
+          "
+          >
+            {product.name}
+          </h3>
+
+          {/* RATING */}
+
+          <div className="flex items-center gap-2 mb-4">
+
+            <div className="flex">
+
+              {Array(5)
+                .fill("")
+                .map((_, i) => (
+                  <svg
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < 4
+                        ? "text-yellow-400"
+                        : "text-gray-200"
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+            </div>
+
+            <span className="text-xs text-gray-400">
+              (4.8)
+            </span>
+
+          </div>
+
+          {/* PRICE */}
+
+          <div className="flex items-end justify-between">
+
+            <div>
+
+              <p className="text-2xl font-bold text-gray-900">
+                ${product.offerPrice}
+              </p>
+
+              {product.price >
+                product.offerPrice && (
+                <p className="text-sm text-gray-400 line-through">
+                  ${product.price}
+                </p>
+              )}
+
+            </div>
+
+            <div
+              onClick={(e) =>
+                e.stopPropagation()
+              }
+            >
+
+              {!cartItems[product._id] ? (
+
+                <button
+                  onClick={() =>
+                    addToCart(product._id)
+                  }
+                  className="
+                  bg-gradient-to-r
+                  from-green-500
+                  to-emerald-700
+                  text-white
+                  rounded-2xl
+                  px-5
+                  py-2.5
+                  font-medium
+                  shadow-lg
+                  shadow-green-300/40
+                  hover:scale-105
+                  transition-all
+                  "
+                >
+                  Add
+                </button>
+
+              ) : (
+
+                <div className="flex items-center gap-2 bg-green-50 rounded-2xl px-2 py-1">
+
+                  <button
+                    onClick={() =>
+                      removeFromCart(product._id)
+                    }
+                    className="
+                    w-8 h-8
+                    rounded-xl
+                    bg-gradient-to-r
+                    from-red-400
+                    to-red-500
+                    text-white
+                    "
+                  >
+                    −
+                  </button>
+
+                  <span className="font-bold w-6 text-center text-green-700">
+                    {cartItems[product._id]}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      addToCart(product._id)
+                    }
+                    className="
+                    w-8 h-8
+                    rounded-xl
+                    bg-gradient-to-r
+                    from-green-500
+                    to-emerald-700
+                    text-white
+                    "
+                  >
+                    +
+                  </button>
+
+                </div>
+
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </Card>
+    )
+  );
 };
 
 export default ProductCard;
