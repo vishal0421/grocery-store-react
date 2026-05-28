@@ -2,34 +2,55 @@ import { footerLinks, features } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden bg-[#07140d] pt-20 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32">
+    <footer className="relative overflow-hidden mt-28 bg-transparent px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32 pb-8">
 
-      {/* Background Effects */}
+      {/* Background Blur Effects */}
 
-      <div className="absolute top-0 left-0 w-72 h-72 bg-green-500/10 rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-400/10 rounded-full blur-[150px]"></div>
+      <div className="absolute top-0 left-0 w-80 h-80 bg-green-500/10 rounded-full blur-[140px]" />
+      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] bg-emerald-600/10 rounded-full blur-[180px]" />
 
-      <div className="relative max-w-7xl mx-auto">
+      <div
+        className="
+        relative
+        max-w-7xl
+        mx-auto
+        bg-white/5
+        backdrop-blur-2xl
+        border
+        border-white/10
+        rounded-[40px]
+        p-8
+        md:p-12
+        shadow-2xl
+        shadow-green-900/10
+        "
+      >
 
-        {/* TOP */}
+        {/* TOP SECTION */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
 
           {/* BRAND */}
 
-          <div className="lg:col-span-1">
+          <div>
 
             <div className="flex items-center gap-3 mb-5">
 
               <div
                 className="
-                w-12 h-12
+                w-12
+                h-12
+                rounded-2xl
                 bg-gradient-to-br
                 from-green-500
                 to-emerald-700
-                rounded-2xl
-                flex items-center justify-center
-                shadow-xl shadow-green-500/30
+                flex
+                items-center
+                justify-center
+                shadow-xl
+                shadow-green-500/30
+                hover:scale-110
+                transition
                 "
               >
                 🛒
@@ -37,7 +58,7 @@ const Footer = () => {
 
               <div>
 
-                <h2 className="text-2xl font-extrabold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+                <h2 className="text-2xl font-extrabold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
                   FreshGrocer
                 </h2>
 
@@ -49,42 +70,38 @@ const Footer = () => {
 
             </div>
 
-            <p className="text-gray-400 text-sm leading-7 mb-6">
-              Fresh groceries delivered straight to your doorstep.
-              Shop fruits, vegetables, dairy products and daily
-              essentials with fast delivery and affordable pricing.
+            <p className="text-sm text-gray-400 leading-7 mb-6">
+              Fresh groceries delivered directly to your doorstep.
+              Fast delivery, quality products and affordable prices.
             </p>
 
-            {/* SOCIAL */}
+            {/* SOCIALS */}
 
             <div className="flex gap-3">
 
-              {["Instagram","Twitter","Facebook","YouTube"].map((social)=>(
+              {["📷", "🐦", "📘", "▶️"].map(
+                (icon, index) => (
 
-                <a
-                  key={social}
-                  href="#"
-                  className="
-                  w-11 h-11
-                  rounded-2xl
-                  bg-white/5
-                  backdrop-blur-xl
-                  border border-white/10
-                  flex items-center justify-center
-                  hover:scale-110
-                  hover:bg-green-500
-                  transition-all
-                  duration-300
-                  "
-                >
+                  <button
+                    key={index}
+                    className="
+                    w-11
+                    h-11
+                    rounded-2xl
+                    bg-white/10
+                    border
+                    border-white/10
+                    backdrop-blur-xl
+                    hover:bg-green-500
+                    hover:scale-110
+                    transition-all
+                    "
+                  >
+                    {icon}
+                  </button>
 
-                  <span className="text-gray-300 text-sm">
-                    {social[0]}
-                  </span>
-
-                </a>
-
-              ))}
+                )
+              )}
 
             </div>
 
@@ -96,7 +113,7 @@ const Footer = () => {
 
             <div key={index}>
 
-              <h3 className="font-bold text-white mb-5 text-lg">
+              <h3 className="text-white font-bold text-lg mb-5">
                 {section.title}
               </h3>
 
@@ -109,10 +126,10 @@ const Footer = () => {
                     <a
                       href={link.url}
                       className="
-                      text-gray-400
                       text-sm
+                      text-gray-400
                       hover:text-green-400
-                      hover:translate-x-1
+                      hover:translate-x-2
                       inline-block
                       transition-all
                       duration-300
@@ -133,7 +150,7 @@ const Footer = () => {
 
         </div>
 
-        {/* FEATURES */}
+        {/* FEATURE BOXES */}
 
         <div
           className="
@@ -142,29 +159,33 @@ const Footer = () => {
           md:grid-cols-4
           gap-5
           mb-14
-          p-6
-          rounded-[30px]
-          bg-white/5
-          backdrop-blur-xl
-          border border-white/10
           "
         >
 
-          {features.map((feature,index)=>(
+          {features.map((feature, index) => (
 
             <div
               key={index}
               className="
-              flex
-              flex-col
-              items-center
+              bg-white/5
+              backdrop-blur-xl
+              border
+              border-white/10
+              rounded-3xl
+              p-5
               text-center
+              hover:-translate-y-2
+              hover:border-green-500/40
+              transition-all
+              duration-500
               "
             >
 
               <div
                 className="
-                w-14 h-14
+                w-14
+                h-14
+                mx-auto
                 rounded-2xl
                 bg-gradient-to-r
                 from-green-500
@@ -185,11 +206,11 @@ const Footer = () => {
 
               </div>
 
-              <h4 className="font-semibold text-white text-sm mb-1">
+              <h4 className="text-white text-sm font-semibold mb-2">
                 {feature.title}
               </h4>
 
-              <p className="text-gray-400 text-xs">
+              <p className="text-xs text-gray-400">
                 {feature.description}
               </p>
 
@@ -201,36 +222,36 @@ const Footer = () => {
 
         {/* BOTTOM */}
 
-        <div className="pt-8 border-t border-white/10">
+        <div className="border-t border-white/10 pt-8">
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
 
-            <p className="text-gray-500 text-sm">
+            <p className="text-sm text-gray-500">
               © 2026 FreshGrocer. All Rights Reserved.
             </p>
 
-            <div className="flex gap-6 text-sm">
+            <div className="flex gap-6">
 
-              <a
-                href="#"
-                className="text-gray-400 hover:text-green-400 transition"
-              >
-                Privacy Policy
-              </a>
+              {[
+                "Privacy Policy",
+                "Terms",
+                "Cookies"
+              ].map((item, i) => (
 
-              <a
-                href="#"
-                className="text-gray-400 hover:text-green-400 transition"
-              >
-                Terms of Service
-              </a>
+                <a
+                  key={i}
+                  href="#"
+                  className="
+                  text-sm
+                  text-gray-400
+                  hover:text-green-400
+                  transition
+                  "
+                >
+                  {item}
+                </a>
 
-              <a
-                href="#"
-                className="text-gray-400 hover:text-green-400 transition"
-              >
-                Cookie Policy
-              </a>
+              ))}
 
             </div>
 
@@ -239,6 +260,7 @@ const Footer = () => {
         </div>
 
       </div>
+
     </footer>
   );
 };

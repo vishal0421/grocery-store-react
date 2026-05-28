@@ -58,92 +58,57 @@ const Navbar = () => {
       <div className="flex items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32 py-4">
 
         {/* Logo */}
-
         <Link to="/" className="flex items-center gap-3 group">
-
           <div
             className="
-            w-11 h-11
-            rounded-2xl
+            w-11 h-11 rounded-2xl
             bg-gradient-to-br
-            from-green-500
-            to-emerald-700
-            flex
-            items-center
-            justify-center
-            shadow-xl
-            shadow-green-500/30
+            from-green-500 to-emerald-700
+            flex items-center justify-center
+            shadow-xl shadow-green-500/30
             group-hover:rotate-6
             group-hover:scale-110
-            transition-all duration-500
-            "
+            transition-all duration-500"
           >
-
             🛒
-
           </div>
 
           <div>
-
             <h1 className="text-xl md:text-2xl font-extrabold bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
               FreshGrocer
             </h1>
 
             <p
               className={`text-[11px] ${
-                scrolled
-                  ? "text-gray-400"
-                  : "text-gray-300"
+                scrolled ? "text-gray-400" : "text-gray-300"
               }`}
             >
               Fresh Everyday
             </p>
-
           </div>
-
         </Link>
 
         {/* Desktop */}
-
         <div className="hidden lg:flex items-center gap-6">
 
           <Link
             to="/"
-            className={`font-medium transition duration-300 ${
-              scrolled
-                ? "text-white hover:text-green-300"
-                : "text-white hover:text-green-300"
-            }`}
+            className="font-medium text-white hover:text-gray-300 transition"
           >
             Home
           </Link>
 
           <Link
             to="/products"
-            className={`font-medium transition duration-300 ${
-              scrolled
-                ? "text-white hover:text-green-300"
-                : "text-white hover:text-green-300"
-            }`}
+            className="font-medium text-white hover:text-gray-300 transition"
           >
             Products
           </Link>
 
           {/* Search */}
-
           <div className="relative">
 
-            <div
-              className="
-              flex items-center gap-3
-              bg-white/10
-              backdrop-blur-xl
-              border border-white/10
-              px-5 py-3
-              rounded-full
-              w-[320px]
-              "
-            >
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/10 px-5 py-3 rounded-full w-[320px]">
 
               <svg
                 width="18"
@@ -162,14 +127,7 @@ const Navbar = () => {
                 onChange={(e) =>
                   setSearchQuery(e.target.value)
                 }
-                className="
-                bg-transparent
-                outline-none
-                w-full
-                text-sm
-                text-white
-                placeholder:text-gray-300
-                "
+                className="bg-transparent outline-none w-full text-sm text-white placeholder:text-gray-300"
                 type="text"
                 placeholder="Search fresh groceries..."
               />
@@ -177,10 +135,8 @@ const Navbar = () => {
             </div>
 
             {suggestions.length > 0 && (
-              <div className="absolute mt-3 w-full bg-[#12211a]/95 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl">
-
+              <div className="absolute mt-3 w-full bg-[#12211a]/95 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl z-[999]">
                 {suggestions.map((product) => (
-
                   <button
                     key={product._id}
                     onClick={() => {
@@ -198,49 +154,35 @@ const Navbar = () => {
                     </p>
 
                   </button>
-
                 ))}
-
               </div>
             )}
 
           </div>
 
-          {/* Cart */}
-
           <button
             onClick={() => navigate("/cart")}
             className="relative p-3 rounded-2xl bg-white/10 backdrop-blur-xl hover:scale-110 transition"
           >
-
             🛒
-
             {cartCount() > 0 && (
               <span className="absolute -top-1 -right-1 bg-orange-500 text-white w-5 h-5 text-[10px] rounded-full flex items-center justify-center">
                 {cartCount()}
               </span>
             )}
-
           </button>
-
-          {/* Wishlist */}
 
           <button
             onClick={() => navigate("/products")}
             className="relative p-3 rounded-2xl bg-white/10 backdrop-blur-xl hover:scale-110 transition"
           >
-
             ❤️
-
             {Object.keys(wishlistItems).length > 0 && (
               <span className="absolute -top-1 -right-1 bg-green-600 text-white w-5 h-5 text-[10px] rounded-full flex items-center justify-center">
                 {Object.keys(wishlistItems).length}
               </span>
             )}
-
           </button>
-
-          {/* Notification */}
 
           <button
             onClick={() =>
@@ -253,17 +195,13 @@ const Navbar = () => {
 
           {user ? (
             <div className="relative group">
-
               <button className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center shadow-lg">
-
                 <span className="text-white font-bold">
                   {user?.name?.[0] || "U"}
                 </span>
-
               </button>
 
-              <ul className="hidden group-hover:block absolute top-14 right-0 bg-[#12211a]/95 backdrop-blur-xl rounded-2xl shadow-xl w-48 py-2">
-
+              <ul className="absolute top-12 right-0 w-48 py-2 bg-[#12211a]/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10 opacity-0 invisible translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-[999]">
                 <li
                   onClick={() =>
                     navigate("/my-orders")
@@ -274,45 +212,99 @@ const Navbar = () => {
                 </li>
 
                 <li
-                  onClick={() => setUser(null)}
+                  onClick={() => {
+                    setUser(null);
+                    localStorage.removeItem("token");
+                  }}
                   className="px-4 py-3 hover:bg-red-500/10 text-red-400 cursor-pointer"
                 >
                   Logout
                 </li>
-
               </ul>
-
             </div>
           ) : (
             <Button
               onClick={() =>
                 setShowUserLogin(true)
               }
-              className="
-              bg-gradient-to-r
-              from-green-500
-              to-emerald-700
-              "
+              className="bg-gradient-to-r from-green-500 to-emerald-700"
             >
               Login
             </Button>
           )}
+
         </div>
 
-        {/* Mobile */}
-
+        {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className={`lg:hidden p-2 ${
-            scrolled
-              ? "text-white"
-              : "text-white"
-          }`}
+          className="lg:hidden p-2 text-white text-2xl"
         >
-          ☰
+          {open ? "✕" : "☰"}
         </button>
 
       </div>
+
+      {/* Mobile Menu */}
+      {open && (
+        <div className="lg:hidden bg-[#12211a]/95 backdrop-blur-2xl border-t border-white/10 px-6 py-6 space-y-5">
+
+          <Link
+            to="/"
+            className="block text-white "
+            onClick={() => setOpen(false)}
+          >
+            Home
+          </Link>
+
+          <Link
+            to="/products"
+            className="block text-white"
+            onClick={() => setOpen(false)}
+          >
+            Products
+          </Link>
+
+          <button
+            onClick={() => navigate("/cart")}
+            className="text-white block"
+          >
+            Cart ({cartCount()})
+          </button>
+
+          {!user ? (
+            <Button
+              onClick={() => {
+                setShowUserLogin(true);
+                setOpen(false);
+              }}
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-700"
+            >
+              Login
+            </Button>
+          ) : (
+            <>
+              <button
+                onClick={() => navigate("/my-orders")}
+                className="block text-white"
+              >
+                My Orders
+              </button>
+
+              <button
+                onClick={() => {
+                  setUser(null);
+                  localStorage.removeItem("token");
+                }}
+                className="block text-red-400"
+              >
+                Logout
+              </button>
+            </>
+          )}
+
+        </div>
+      )}
     </nav>
   );
 };
